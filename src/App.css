@@ -1,38 +1,45 @@
-.App {
-  text-align: center;
+.bg-gradient-uf-info {
+  background: transparent linear-gradient(180deg, #aacde0, #2171a1) 0 0
+    no-repeat padding-box;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.list-group-item {
+  border: 0px solid #e9ecef !important;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.d-flex {
   display: flex;
-  flex-direction: column;
+}
+
+.justify-between {
+  justify-content: space-between !important;
+}
+.justify-content-end {
+  justify-content: end !important;
+}
+.align-item-center {
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.box-shadow {
+  box-shadow: 0 8px 26px -4px hsla(0, 0%, 8%, 0.15),
+    0 8px 9px -5px hsla(0, 0%, 8%, 0.06) !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.border-1 {
+  border-radius: 1rem !important;
+}
+
+.search-content {
+  border: 0px !important;
+}
+.alert-warning {
+  color: #664d03 !important;
+  background-color: #fff3cd !important;
+  border-color: #ffe69c !important;
+  --bs-alert-link-color: #664d03 !important;
+}
+
+.icon-sidebar {
+  min-width: 2.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
 }

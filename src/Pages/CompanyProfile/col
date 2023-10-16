@@ -1,0 +1,45 @@
+   <!-- <Col xl="4">
+            <Card>
+              <CardHeader className="border-0">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h3 className="mb-0">Products</h3>
+                  </div>
+                  <div className="col text-right">
+                    <Button
+                      color="primary"
+                      href="/products"
+                      //   onClick={(e) => e.preventDefault()}
+                      size="sm"
+                    >
+                      See all
+                    </Button>
+                  </div>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                <Carousel
+                  activeIndex={activeIndex}
+                  next={next}
+                  previous={previous}
+                >
+                  {/* <CarouselIndicators
+                    items={items}
+                    activeIndex={activeIndex}
+                    onClickHandler={goToIndex}
+                  /> */}
+                  {slides}
+                  {/* <CarouselControl
+                    direction="prev"
+                    directionText="Previous"
+                    onClickHandler={previous}
+                  />
+                  <CarouselControl
+                    direction="next"
+                    directionText="Next"
+                    onClickHandler={next}
+                  /> */}
+                </Carousel>
+              </CardBody>
+            </Card>
+          </Col> -->

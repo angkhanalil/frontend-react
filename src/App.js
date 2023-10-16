@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import "./App.css";
+import { Outlet } from "react-router-dom";
+import Sidebar from "./components/Sidebar/Sidebar";
+import NavbarAdmin from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
+import { Container } from "reactstrap";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Sidebar />
+      <div className="main-content">
+        <NavbarAdmin />
+        {/* <div className="header bg-gradient-uf-info pb-5 pt-5 pt-md-8"></div>{" "} */}
+        <Outlet />
+      </div>{" "}
+      <Container>
+        <Footer />
+      </Container>
     </div>
+    // <Router>
+    //   <Routes>
+    //     <Route
+    //       path="/"
+    //       element={
+    //         // <ProtectedRoute>
+    //         <Login />
+    //         // </ProtectedRoute>
+    //       }
+    //     />
+    //   </Routes>
+    // </Router>
   );
 }
 
