@@ -5,6 +5,12 @@ import CompanyService from "../../Service/CompanyService.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import CompanyHeader from "../../components/Header/CompanyHeader";
+import TotalUser from "../../components/Header/TotalUser";
+import TotalOrder from "../../components/Header/TotalOrder";
+import TotalOrderSuccess from "../../components/Header/TotalOrderSuccess";
+import TotalOrderWaitApprove from "../../components/Header/TotalOrderWaitApprove";
+import Moment from "moment";
+import tz from "moment-timezone";
 import {
   Container,
   Row,
@@ -13,75 +19,30 @@ import {
   // CardHeader,
   Table,
   Button,
-  // Carousel,
-  // CarouselControl,
-  // CarouselItem,
-  // CarouselCaption,
-  // CarouselIndicators,
   Nav,
   Tab,
   Form,
   Alert,
+  Breadcrumb,
 } from "react-bootstrap"; //"reactstrap";
 // import { Nav, Tab } from "react-bootstrap";
 const CompanyProfile = () => {
   const { companyId } = useParams();
   const [animating, setAnimating] = useState(false);
   const [products, setProducts] = useState([]);
-
-  // const [activeIndex, setActiveIndex] = useState(0);
-  // const items = [
-  //   {
-  //     src: "https://companieslogo.com/img/orig/SCB.BK-478d8e61.png?t=1684403046",
-  //     altText: "Slide 1",
-  //     caption: "Slide 1",
-  //   },
-  //   {
-  //     src: "https://wp-assets.dotproperty-kh.com/wp-content/uploads/sites/9/2014/11/11103740/Logo_Supalai_2.jpg",
-  //     altText: "Slide 2",
-  //     caption: "Slide 2",
-  //   },
-  // ];
-  // const next = () => {
-  //   // if (animating) return;
-  //   const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
-  //   setActiveIndex(nextIndex);
-  // };
-
-  // const previous = () => {
-  //   // if (animating) return;
-  //   const nextIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1;
-  //   setActiveIndex(nextIndex);
-  // };
-  // const goToIndex = (newIndex) => {
-  //   // if (animating) return;
-  //   setActiveIndex(newIndex);
-  // };
-  // const slides = items.map((item) => {
-  //   return (
-  //     <CarouselItem
-  //       className="custom-tag"
-  //       onExiting={() => setAnimating(true)}
-  //       onExited={() => setAnimating(false)}
-  //       key={item.src}
-  //     >
-  //       <img src={item.src} alt={item.altText} style={{ width: "inherit" }} />
-  //       <CarouselCaption
-  //         captionText={item.caption}
-  //         captionHeader={item.caption}
-  //       />
-  //     </CarouselItem>
-  //   );
-  // });
+  const [company, setCompany] = useState({});
+  const [orderStatus, setOrderStatus] = useState(50);
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     getProductsByCompanyId();
-  }, []);
+    getCompanyByCompanyId();
+    getProjectsByCompanyId();
+  }, [companyId]);
 
   const getProductsByCompanyId = async () => {
     await CompanyService.getProductsByCompanyId(companyId)
       .then((res) => {
-        console.log(res.data);
         setProducts(res.data);
       })
       .catch((err) => {
@@ -89,9 +50,91 @@ const CompanyProfile = () => {
         setProducts([]);
       });
   };
+
+  const getCompanyByCompanyId = async () => {
+    await CompanyService.getCompanyByCompanyId(companyId)
+      .then((res) => {
+        setCompany(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getProjectsByCompanyId = async () => {
+    await CompanyService.getProjectsByCompanyId(companyId)
+      .then((res) => {
+        setProjects(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
-      <CompanyHeader companyId={companyId} />
+      {/* <CompanyHeader companyId={companyId} /> */}
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          //   backgroundImage:
+          //     "url(" + require("../../assets/img/theme/profile-cover.jpg") + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        <Container className="" fluid>
+          <Row>
+            <Col lg="12" md="12">
+              <h1 className="display-2 text-white">{company.companyName}</h1>
+              <p className="text-white mt-0 mb-5">{company.companyDesc}</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12" md="12" className="d-flex justify-between">
+              <Button
+                color="info"
+                // href="#pablo"
+                // onClick={(e) => e.preventDefault()}
+              >
+                Edit Company
+              </Button>
+              <Breadcrumb>
+                <Breadcrumb.Item href="/company">Company</Breadcrumb.Item>
+                <Breadcrumb.Item
+                  active
+                  href="https://getbootstrap.com/docs/4.0/components/breadcrumb/"
+                >
+                  Company Infomation
+                </Breadcrumb.Item>
+              </Breadcrumb>
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col lg="6" xl="3">
+              <TotalUser companyId={companyId} />
+            </Col>
+            <Col lg="6" xl="3">
+              <TotalOrder
+                companyId={companyId}
+                setOrderStatus={setOrderStatus}
+              />
+            </Col>
+            <Col lg="6" xl="3">
+              <TotalOrderSuccess
+                onlineStatus={orderStatus}
+                setOrderStatus={setOrderStatus}
+              />
+            </Col>
+            <Col lg="6" xl="3">
+              <TotalOrderWaitApprove setOrderStatus={setOrderStatus} />
+            </Col>
+          </Row>
+        </Container>
+      </div>
+
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row className="mt-5">
@@ -105,8 +148,8 @@ const CompanyProfile = () => {
                   <div className="col text-right">
                     <Button
                       color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      href="/new-product"
+                      // onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
                       Create New Product
@@ -148,10 +191,9 @@ const CompanyProfile = () => {
                             </div>
                             <div>
                               <Button
-                                className="btn"
                                 href={`/product-details/${companyId}/${product.clothingCatId}`}
                               >
-                                <FontAwesomeIcon icon={faArrowRight} />
+                                <i className="fa-solid fa-eye"></i>
                               </Button>
                             </div>
                           </li>
@@ -205,38 +247,51 @@ const CompanyProfile = () => {
                     <tr>
                       <th scope="col">Project Name</th>
                       <th scope="col">Total Orders</th>
-                      <th scope="col">Online Date</th>
+                      {/* <th scope="col">Online Date</th> */}
                       <th scope="col">Type</th>
+                      <th scope="col">Details</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
+                    {projects.map((project, idx) => {
+                      return (
+                        <tr key={project.projId}>
+                          <th scope="row">
+                            {project.projName}
+                            <h6>
+                              <span
+                                className="badge badge-pill badge-secondary"
+                                style={{ fontSize: "10px", color: "#8accfb" }}
+                              >
+                                online date :{" "}
+                                {Moment(project.onlineStartDate)
+                                  .tz("Etc/GMT-0")
+                                  .format("DD MMM YYYY")}{" "}
+                                -{" "}
+                                {Moment(project.onlineEndDate)
+                                  .tz("Etc/GMT-0")
+                                  .format("DD MMM YYYY")}
+                              </span>
+                            </h6>
+                          </th>
+                          <td>4,569</td>
+                          {/* <td>340</td> */}
+                          <td>
+                            {/* <i className="fas fa-arrow-up text-success mr-3" />{" "} */}
+                            {project.welfareType}
+                          </td>
+                          <td>
+                            <Button
+                              style={{ border: "0" }}
+                              variant="outline-light"
+                              href={`/project-info/${companyId}/${project.projId}`}
+                            >
+                              <i className="fa-solid fa-envelope-open"></i>
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </Table>
               </Card.Body>

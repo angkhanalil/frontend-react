@@ -5,6 +5,9 @@ import {
   faPlus,
   faBuilding,
   faNewspaper,
+  faTruckFast,
+  faBoxesPacking,
+  faExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 // reactstrap components
 import {
@@ -140,13 +143,13 @@ const Sidebar = () => {
                   href="#collapseExample"
                   aria-expanded="false"
                   aria-controls="collapseExample"
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                  //   tag={NavLinkRRD}
+                  style={{ display: "flex" }}
+                  //   tag={NavLinkRRD}, justifyContent: "space-between"
                   //   onClick={closeCollapse}
                 >
                   {/* <i className="ni ni-tv-2 text-primary" /> */}
-                  COMPANY
                   <i className="ni ni-tv-2 text-primary " />
+                  COMPANY
                 </NavLink>
 
                 <div className="collapse" id="collapseExample">
@@ -188,23 +191,109 @@ const Sidebar = () => {
                   //   tag={NavLinkRRD}
                   //   onClick={closeCollapse}
                 >
-                  <FontAwesomeIcon
+                  {/* <FontAwesomeIcon
                     className="text-primary icon-sidebar"
                     icon={faNewspaper}
-                  />
+                  /> */}
+                  <i className="fas fa-heart text-primary"></i>
                   Report
                 </NavLink>
               </NavItem>
+
               <NavItem>
                 <NavLink
-                  to="/picking-to-sorter"
-                  tag={Link}
-                  //   tag={NavLinkRRD}
+                  data-bs-toggle="collapse"
+                  href="#collapseManageOrder"
+                  aria-expanded="false"
+                  aria-controls="collapseManageOrder"
+                  style={{ display: "flex" }}
+                  //   tag={NavLinkRRD}, justifyContent: "space-between"
                   //   onClick={closeCollapse}
                 >
-                  <i className="ni ni-tv-2 text-primary" />
-                  Picking to Sort
+                  {/* <i className="ni ni-tv-2 text-primary" /> */}
+                  <i className="ni ni-tv-2 text-primary " />
+                  Manage Order
                 </NavLink>
+
+                <div className="collapse" id="collapseManageOrder">
+                  <Nav navbar style={{ marginLeft: "1rem" }}>
+                    <NavItem>
+                      <NavLink
+                        to="/company"
+                        tag={Link}
+                        //   tag={NavLinkRRD}
+                        //   onClick={closeCollapse}
+                      >
+                        {" "}
+                        <FontAwesomeIcon
+                          className="text-primary icon-sidebar"
+                          icon={faExclamation}
+                        />
+                        Import Customer
+                      </NavLink>
+                      <NavLink
+                        to="/new-company"
+                        tag={Link}
+                        //   tag={NavLinkRRD}
+                        //   onClick={closeCollapse}
+                      >
+                        <FontAwesomeIcon
+                          className="text-primary icon-sidebar"
+                          icon={faExclamation}
+                        />
+                        Import Order
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                </div>
+              </NavItem>
+
+              <NavItem>
+                <NavLink
+                  data-bs-toggle="collapse"
+                  href="#collapseManageShipping"
+                  aria-expanded="false"
+                  aria-controls="collapseManageShipping"
+                  style={{ display: "flex" }}
+                  //   tag={NavLinkRRD}, justifyContent: "space-between"
+                  //   onClick={closeCollapse}
+                >
+                  {/* <i className="ni ni-tv-2 text-primary" /> */}
+                  <i className="ni ni-tv-2 text-primary " />
+                  Manage Shipping
+                </NavLink>
+
+                <div className="collapse" id="collapseManageShipping">
+                  <Nav navbar style={{ marginLeft: "1rem" }}>
+                    <NavItem>
+                      <NavLink
+                        to="/company"
+                        tag={Link}
+                        //   tag={NavLinkRRD}
+                        //   onClick={closeCollapse}
+                      >
+                        {" "}
+                        <FontAwesomeIcon
+                          className="text-primary icon-sidebar"
+                          icon={faTruckFast}
+                        />
+                        Config Shipping Address
+                      </NavLink>
+                      <NavLink
+                        to="/pick-to-sort"
+                        tag={Link}
+                        //   tag={NavLinkRRD}
+                        //   onClick={closeCollapse}
+                      >
+                        <FontAwesomeIcon
+                          className="text-primary icon-sidebar"
+                          icon={faBoxesPacking}
+                        />
+                        Pick to Sort
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                </div>
               </NavItem>
             </Nav>
             <hr className="my-3" />

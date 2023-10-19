@@ -1,7 +1,14 @@
 import React from "react";
+import CreateProductInfo from "../../components/Product/CreateProductInfo";
+import Header from "../../components/Header/Header";
 
 const NewProduct = () => {
-  return <div>NewProduct</div>;
+  return (
+    <>
+      <Header />
+      <CreateProductInfo />
+    </>
+  );
 };
 
 export default NewProduct;

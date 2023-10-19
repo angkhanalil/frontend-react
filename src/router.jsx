@@ -18,6 +18,7 @@ import Invoice from "./Pages/OrderDetail/Invoice";
 import ProjectInfo from "./Pages/Project/ProjectInfo";
 import CreateCompany from "./Pages/Company/CreateCompany";
 import NewProduct from "./Pages/Products/NewProduct";
+import PickToSort from "./Pages/Shipping/PickToSort";
 
 function ErrorPage() {
   const error = useRouteError();
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
       { path: "/order", element: <OrderDetail /> },
       { path: "/invoice", element: <Invoice /> },
       { path: "/new-company", element: <CreateCompany /> },
+      { path: "/pick-to-sort", element: <PickToSort /> },
     ],
   },
   {

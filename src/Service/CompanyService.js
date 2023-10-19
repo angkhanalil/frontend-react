@@ -21,12 +21,21 @@ const getProjectsByCompanyId = (companyId) => {
 const getProductByCompanyIdAndClothingCatId = (companyId, clothingCatId) => {
   return axios.get(`/company/${companyId}/product/${clothingCatId}`);
 };
+
+//Get Employees By Company Id
+const getEmployeesByCompanyId = (companyId, pageNo, pageSize) => {
+  return axios.get(
+    `/company/${companyId}/employees?pageNo=${pageNo}&${pageSize}&sortBy=companyId`
+  );
+};
+
 const CompanyService = {
   getCompanys,
   getProductsByCompanyId,
   getProjectsByCompanyId,
   getCompanyByCompanyId,
   getProductByCompanyIdAndClothingCatId,
+  getEmployeesByCompanyId,
 };
 
 export default CompanyService;

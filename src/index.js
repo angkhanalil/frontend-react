@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/plugins/nucleo/css/nucleo.css";
 // import "./assets/@fortawesome/fontawesome-free/css/all.min.css";
 import "./assets/css/argon-dashboard-react.css";
+import "./assets/css/all.min.css";
 import { RouterProvider } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

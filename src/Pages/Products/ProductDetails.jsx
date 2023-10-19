@@ -15,6 +15,7 @@ import {
   FloatingLabel,
   Carousel,
 } from "react-bootstrap";
+import { Label } from "reactstrap";
 // import {
 //   Container,
 //   Col,
@@ -108,33 +109,42 @@ const ProductDetails = () => {
                 </Row>
                 <Row className="mt-5">
                   <Col xl="4">
-                    <Carousel activeIndex={index} onSelect={handleSelect}>
-                      <Carousel.Item>
-                        <img
-                          className="d-block w-100"
-                          src="holder.js/800x400?text=First slide&bg=f5f5f5"
-                          alt="First slide"
-                        />
-                        {/* <ExampleCarouselImage text="First slide" /> */}
-                        <Carousel.Caption>
-                          <h3>First slide label</h3>
-                          <p>
-                            Nulla vitae elit libero, a pharetra augue mollis
-                            interdum.
-                          </p>
-                        </Carousel.Caption>
-                      </Carousel.Item>
-                      <Carousel.Item>
-                        {/* <ExampleCarouselImage text="Second slide" /> */}
-                        <Carousel.Caption>
-                          <h3>Second slide label</h3>
-                          <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                          </p>
-                        </Carousel.Caption>
-                      </Carousel.Item>
-                    </Carousel>
+                    {false ? (
+                      <>
+                        <Carousel activeIndex={index} onSelect={handleSelect}>
+                          <Carousel.Item>
+                            <img
+                              className="d-block w-100"
+                              src="holder.js/800x400?text=First slide&bg=f5f5f5"
+                              alt="First slide"
+                            />
+                            {/* <ExampleCarouselImage text="First slide" /> */}
+                            <Carousel.Caption>
+                              <h3>First slide label</h3>
+                              <p>
+                                Nulla vitae elit libero, a pharetra augue mollis
+                                interdum.
+                              </p>
+                            </Carousel.Caption>
+                          </Carousel.Item>
+                          <Carousel.Item>
+                            {/* <ExampleCarouselImage text="Second slide" /> */}
+                            <Carousel.Caption>
+                              <h3>Second slide label</h3>
+                              <p>
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit.
+                              </p>
+                            </Carousel.Caption>
+                          </Carousel.Item>
+                        </Carousel>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <Label>Not Found Image</Label>
+                      </>
+                    )}
                   </Col>
                   <Col xl="8">
                     <Col lg="8">
