@@ -1,7 +1,7 @@
 import axios from "axios";
 import TokenService from "./Service/TokenService";
 const instance = axios.create({
-  baseURL: "http://localhost:8082/",
+  baseURL: "https://spbwebapp.wacoal.co.th/uniform-backend2/",
   headers: {
     "Content-Type": "application/json",
   },

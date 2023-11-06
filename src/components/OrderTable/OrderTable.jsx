@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderOpen } from "@fortawesome/free-solid-svg-icons";
+import ProjectService from "../../Service/ProjectService";
 
-const OrderTable = () => {
+const OrderTable = (props) => {
+  const { projectId, onlineStatus, setOrderStatus, orderStausName, companyId } =
+    props;
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    getOrdersByProjectIdAndStatus();
+  }, [onlineStatus]);
+
+  const getOrdersByProjectIdAndStatus = () => {
+    ProjectService.getOrdersByProjectIdAndStatus(projectId, onlineStatus)
+      .then((res) => {
+        setOrders(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setOrders([]);
+      });
+  };
+
   return (
     <>
       <Table className="align-items-center table-flush" responsive>
@@ -19,25 +39,29 @@ const OrderTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">/argon/</th>
-            <td>4,569</td>
-            <td>340</td>
-            <td>
-              <i className="fas fa-arrow-up text-success mr-3" />
-              46,53%
-            </td>
-            <td>s</td>
-            <td>s</td>
-            <td>
-              <Button color="primary" href="/order">
-                <FontAwesomeIcon icon={faFolderOpen} />
-              </Button>
-              <Button color="primary" href="/invoice">
-                <FontAwesomeIcon icon={faFolderOpen} />
-              </Button>
-            </td>
-          </tr>
+          {orders.map((ord) => {
+            return (
+              <tr key={ord.orderNo}>
+                <th scope="row">{ord.orderNo}</th>
+                <td>{ord.employeeNumber}</td>
+                <td>{ord.orderDate}</td>
+                <td></td>
+                <td> {ord.netAmtNoVat}</td>
+                <td>{ord.onlineStatusName}</td>
+                <td>
+                  {/* <Button color="primary" href={`/order-detail/${ord.orderNo}`}>
+                    <FontAwesomeIcon icon={faFolderOpen} />
+                  </Button> */}
+                  <a href={`/order-detail/${companyId}/${ord.orderNo}`}>
+                    <FontAwesomeIcon icon={faFolderOpen} />
+                  </a>
+                  {/* <Button color="primary" href="/invoice">
+                    <FontAwesomeIcon icon={faFolderOpen} />
+                  </Button> */}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </>

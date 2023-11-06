@@ -4,9 +4,13 @@ import axios from "../axios";
 const getProductImageByClothingCatId = (clothingCatId) => {
   return axios.get(`/product/${clothingCatId}/images`);
 };
-
+//Get All FactorSizes
+const getFactorSizes = () => {
+  return axios.get(`/factorSizes`);
+};
 const ProductService = {
   getProductImageByClothingCatId,
+  getFactorSizes,
 };
 
 export default ProductService;

@@ -6,6 +6,8 @@ import TotalOrderSuccess from "../../components/Header/TotalOrderSuccess.jsx";
 import TotalOrderWaitApprove from "../../components/Header/TotalOrderWaitApprove.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import ReportService from "../../Service/ReportService";
+import ProjectService from "../../Service/ProjectService";
 import {
   Container,
   Row,
@@ -20,14 +22,13 @@ import {
   CarouselCaption,
   CarouselIndicators,
   CardBody,
-} from "reactstrap";
+  Breadcrumb,
+} from "react-bootstrap";
 import OrderTable from "../../components/OrderTable/OrderTable";
 
 const ProjectInfo = () => {
-  const { projectId } = useParams();
-  const [project, setProject] = useState({
-    projName: "Project Name",
-  });
+  const { projectId, companyId } = useParams();
+  const [project, setProject] = useState({});
   const [company, setCompany] = useState({
     companyName: "Company Name",
   });
@@ -35,7 +36,69 @@ const ProjectInfo = () => {
   const [orderStaus, setOrderStatus] = useState(10);
   const [orderStausName, setOrderStatusName] = useState("Wait Approve");
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [material, setMaterial] = useState([]);
 
+  useEffect(() => {
+    getProjectByProjectId();
+    console.log(projectId);
+    getAllOrdersProject();
+    getOrderSizeSKU();
+  }, [projectId]);
+
+  const getAllOrdersProject = () => {
+    // ProjectService.getTotalProjectOrder(projectId, companyId);
+  };
+  const getOrderSizeSKU = async () => {
+    console.log("getOrderSizeSKU");
+    await ReportService.getSkuByCompanyIdAndProjectId(companyId, projectId)
+      .then((res) => {
+        setOrderSizes(res.data);
+        setMaterial(res.data);
+        console.log(res.data);
+        return res.data;
+      })
+      .then((data) => {
+        console.log("eee ", data);
+        uniqueProduct(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const uniqueProduct = (data) => {
+    console.log("uni ", data);
+    const result = Array.from(new Set(data.map((p) => p.clothingCatId))).map(
+      (id) => {
+        return {
+          clothingCatId: id,
+          clothingCatName: data.find((s) => s.clothingCatId === id)
+            .clothingCatName,
+        };
+      }
+    );
+    console.log("result", result);
+    setProducts(result);
+  };
+
+  const findOrderSize = async (id) => {
+    console.log("ID", id);
+    const mat = orderSizes.filter((s) => s.clothingCatId == id);
+
+    await setMaterial(mat);
+    console.log(mat);
+  };
+  const getProjectByProjectId = async () => {
+    await ProjectService.getProjectByProjectId(projectId)
+      .then((res) => {
+        console.log(res.data);
+        setProject(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <div
@@ -62,15 +125,33 @@ const ProjectInfo = () => {
                 <h1 className="display-2 text-white"> {project.projName}</h1>
                 <p className="text-white mt-0 mb-5">{company.companyName}</p>
               </div>
-              <div>
-                {/* <Button
-                  color="info"
-                  href="/project-details/16"
-                  //   onClick={(e) => e.preventDefault()}
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12" md="12" className="d-flex justify-content-between">
+              {" "}
+              <Button
+                color="info"
+                // href="/project-details/16"
+                //   onClick={(e) => e.preventDefault()}
+              >
+                project details
+              </Button>
+              <Breadcrumb>
+                <Breadcrumb.Item href="/company">Company</Breadcrumb.Item>
+                <Breadcrumb.Item href={`/company-profile/${companyId}`}>
+                  Company Info
+                </Breadcrumb.Item>
+                {/* <Breadcrumb.Item href={`/employees-company/${companyId}`}>
+                  Employees
+                </Breadcrumb.Item> */}
+                <Breadcrumb.Item
+                  active
+                  href="https://getbootstrap.com/docs/4.0/components/breadcrumb/"
                 >
-                  project details
-                </Button> */}
-              </div>
+                  Project Info
+                </Breadcrumb.Item>
+              </Breadcrumb>
             </Col>
           </Row>
           <Row className="mt-5">
@@ -103,33 +184,34 @@ const ProjectInfo = () => {
         <Row className="mt-5">
           <Col className="mb-5 mb-xl-5" xl="12">
             <Card className=" shadow">
-              <CardHeader className="border-0">
+              <Card.Header className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
                     <h3 className="mb-0">Orders {orderStausName}</h3>
                   </div>
                 </Row>
-              </CardHeader>
-              <CardBody>
+              </Card.Header>
+              <Card.Body>
                 <OrderTable
                   projectId={projectId}
                   onlineStatus={orderStaus}
                   setOrderStatus={setOrderStatus}
                   orderStausName={orderStausName}
+                  companyId={companyId}
                 />
-              </CardBody>
+              </Card.Body>
             </Card>
           </Col>
           <Col className="mb-5 mb-xl-5" xl="4">
             <Card className="card-profile shadow">
-              <CardHeader className="border-0">
+              <Card.Header className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
                     <h3 className="mb-0">Products</h3>
                   </div>
                 </Row>
-              </CardHeader>
-              <CardBody>
+              </Card.Header>
+              <Card.Body>
                 <ul className="list-group">
                   {products.map((product) => {
                     return (
@@ -143,7 +225,7 @@ const ProjectInfo = () => {
                           className="avatar-group"
                           style={{ display: "flex", alignItems: "center" }}
                         >
-                          <a
+                          {/* <a
                             className="avatar avatar-sm"
                             onClick={(e) => e.preventDefault()}
                           >
@@ -153,34 +235,40 @@ const ProjectInfo = () => {
                               src={product.imageCover}
                               // src={require("../../assets/img/theme/team-1-800x800.jpg")}
                             />
-                          </a>
+                          </a> */}
                           <b style={{ padding: "5px" }}>
                             {" "}
                             {product.clothingCatName}
                           </b>
                         </div>
                         <div>
-                          <Button color=" ">
+                          {/* <Button color=" "></Button> */}
+                          <a
+                            className="hover"
+                            onClick={() => {
+                              findOrderSize(product.clothingCatId);
+                            }}
+                          >
                             <FontAwesomeIcon icon={faArrowRight} />
-                          </Button>
+                          </a>
                         </div>
                       </li>
                     );
                   })}
                 </ul>
-              </CardBody>
+              </Card.Body>
             </Card>
           </Col>
           <Col className="mb-5 mb-xl-5" xl="8">
             <Card className="card-profile shadow">
-              <CardHeader className="border-0">
+              <Card.Header className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
                     <h3 className="mb-0">Total Material Orders </h3>
                   </div>
                 </Row>
-              </CardHeader>
-              <CardBody>
+              </Card.Header>
+              <Card.Body>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
@@ -191,7 +279,7 @@ const ProjectInfo = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {orderSizes.map((size, idx) => {
+                    {material.map((size, idx) => {
                       return (
                         <tr key={idx}>
                           <th scope="row">{size.clothingCatName}</th>
@@ -203,7 +291,7 @@ const ProjectInfo = () => {
                     })}
                   </tbody>
                 </Table>
-              </CardBody>
+              </Card.Body>
             </Card>
           </Col>
         </Row>

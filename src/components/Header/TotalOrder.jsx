@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "../../axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,8 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Card, CardBody, CardTitle } from "reactstrap";
 
 const TotalOrder = (props) => {
+  const [totalOrder, setTotalOrder] = useState(0);
+
   const setStatus = (status) => {
     console.log("TotalOrderWaitApprove", status);
     props.setOrderStatus(status);
@@ -20,7 +22,7 @@ const TotalOrder = (props) => {
               <CardTitle tag="h5" className="text-uppercase text-muted mb-0">
                 Total Orders
               </CardTitle>
-              <span className="h2 font-weight-bold mb-0">2,356</span>
+              <span className="h2 font-weight-bold mb-0">{totalOrder}</span>
             </div>
             <Col className="col-auto">
               <a

@@ -36,7 +36,7 @@ const TotalUser = (props) => {
               <span className="h2 font-weight-bold mb-0">{totalEmployee}</span>
             </div>
             <Col className="col-auto">
-              <a href="/employees">
+              <a href={props.link}>
                 <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
                   <FontAwesomeIcon icon={faUser} />
                 </div>

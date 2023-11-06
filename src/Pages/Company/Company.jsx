@@ -80,7 +80,7 @@ const Company = () => {
     <>
       <Header />
       {/* */}
-      <Container className="mt-5  " fluid>
+      <Container className="mt--5  " fluid>
         <Row className="mb-3">
           <Col xl="6" md="12">
             <Button className="btn btn-info" href="/new-company">

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./CompanyProfile.css";
 import CompanyService from "../../Service/CompanyService.js";
+import ProjectService from "../../Service/ProjectService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import CompanyHeader from "../../components/Header/CompanyHeader";
 import TotalUser from "../../components/Header/TotalUser";
 import TotalOrder from "../../components/Header/TotalOrder";
+import Company from "../../components/Header/Company.jsx";
 import TotalOrderSuccess from "../../components/Header/TotalOrderSuccess";
 import TotalOrderWaitApprove from "../../components/Header/TotalOrderWaitApprove";
 import Moment from "moment";
@@ -36,8 +38,9 @@ const CompanyProfile = () => {
 
   useEffect(() => {
     getProductsByCompanyId();
-    getCompanyByCompanyId();
-    getProjectsByCompanyId();
+    // getCompanyByCompanyId();
+    // getProjectsByCompanyId();
+    getProjectsActive();
   }, [companyId]);
 
   const getProductsByCompanyId = async () => {
@@ -70,6 +73,17 @@ const CompanyProfile = () => {
         console.log(err);
       });
   };
+
+  const getProjectsActive = async () => {
+    // dispatch(showLoading());
+    await ProjectService.getProjectSummary()
+      .then((res) => {
+        setProjects(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       {/* <CompanyHeader companyId={companyId} /> */}
@@ -88,8 +102,7 @@ const CompanyProfile = () => {
         <Container className="" fluid>
           <Row>
             <Col lg="12" md="12">
-              <h1 className="display-2 text-white">{company.companyName}</h1>
-              <p className="text-white mt-0 mb-5">{company.companyDesc}</p>
+              <Company companyId={companyId} />
             </Col>
           </Row>
           <Row>
@@ -114,7 +127,10 @@ const CompanyProfile = () => {
           </Row>
           <Row className="mt-5">
             <Col lg="6" xl="3">
-              <TotalUser companyId={companyId} />
+              <TotalUser
+                companyId={companyId}
+                link={`/employees-company/${companyId}`}
+              />
             </Col>
             <Col lg="6" xl="3">
               <TotalOrder
@@ -148,7 +164,7 @@ const CompanyProfile = () => {
                   <div className="col text-right">
                     <Button
                       color="primary"
-                      href="/new-product"
+                      href={`/new-product/${companyId}`}
                       // onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
@@ -246,10 +262,10 @@ const CompanyProfile = () => {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">Project Name</th>
+                      <th scope="col">Target Users </th>
                       <th scope="col">Total Orders</th>
-                      {/* <th scope="col">Online Date</th> */}
                       <th scope="col">Type</th>
-                      <th scope="col">Details</th>
+                      <th scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -257,7 +273,7 @@ const CompanyProfile = () => {
                       return (
                         <tr key={project.projId}>
                           <th scope="row">
-                            {project.projName}
+                            {project.projectName}
                             <h6>
                               <span
                                 className="badge badge-pill badge-secondary"
@@ -274,17 +290,21 @@ const CompanyProfile = () => {
                               </span>
                             </h6>
                           </th>
-                          <td>4,569</td>
+                          <td>{project.targetEmployee}</td>
                           {/* <td>340</td> */}
                           <td>
                             {/* <i className="fas fa-arrow-up text-success mr-3" />{" "} */}
-                            {project.welfareType}
+                            {project.totalOrder}
+                          </td>{" "}
+                          <td>
+                            {/* <i className="fas fa-arrow-up text-success mr-3" />{" "} */}
+                            {project.totalOrder}
                           </td>
                           <td>
                             <Button
                               style={{ border: "0" }}
                               variant="outline-light"
-                              href={`/project-info/${companyId}/${project.projId}`}
+                              href={`/project-info/${companyId}/${project.projectId}`}
                             >
                               <i className="fa-solid fa-envelope-open"></i>
                             </Button>

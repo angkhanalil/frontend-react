@@ -42,19 +42,17 @@ const router = createBrowserRouter([
     children: [
       { path: "/company", element: <Company /> },
       { path: "/products", element: <Products /> },
-      { path: "/employees/:companyId", element: <Employees /> },
+
       {
         path: "/product-details/:companyId/:productId",
         element: <ProductDetails />,
       },
-      { path: "/new-product", element: <NewProduct /> },
+
       { path: "/picking-to-sorter", element: <Sorter /> },
       { path: "/orders", element: <Orders /> },
       { path: "/home", element: <Home /> },
       { path: "/project-orders", element: <ProjectOrder /> },
-      { path: "/project-info/:projectId", element: <ProjectInfo /> },
 
-      { path: "/order", element: <OrderDetail /> },
       { path: "/invoice", element: <Invoice /> },
       { path: "/new-company", element: <CreateCompany /> },
       { path: "/pick-to-sort", element: <PickToSort /> },
@@ -67,6 +65,14 @@ const router = createBrowserRouter([
     children: [
       { path: "/company-profile/:companyId", element: <CompanyProfile /> },
       { path: "/employee-profile", element: <EmployeeProfile /> },
+      { path: "/new-product/:companyId", element: <NewProduct /> },
+      { path: "/employees-company/:companyId", element: <Employees /> },
+      { path: "/project-info/:companyId/:projectId", element: <ProjectInfo /> },
+      {
+        path: "/employee-profile/:companyId/:employeeNumber",
+        element: <EmployeeProfile />,
+      },
+      { path: "/order-detail/:companyId/:orderNo", element: <OrderDetail /> },
     ],
   },
 ]);
